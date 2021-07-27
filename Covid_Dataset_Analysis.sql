@@ -25,7 +25,7 @@ order by 4 DESC;
 
 -- Hightest death rate against population per country
 						
-Select  d.location, max (cast(d.total_deaths as INT)) MAX_Death_per_Country /*--This needs to be an INT, that´s why it isn´t grouping it correctly*/
+Select  d.location, max (cast(d.total_deaths as INT)) MAX_Death_per_Country /*--Esto necesita ser un INT, para que se agrupe correctamente*/
 from Covid_Death d
 group by d.location
 order by 2 DESC;
@@ -50,7 +50,7 @@ where d.continent is null
 group by d.location
 order by 2 desc;
 
--- Podemos hacer sum() o alguna funcion agregada sin ningún group by. Claro, si es que solo trabajamos con funciones agregadas
+
 
 --Global numbers: Sacar el ratio de nuevos fallecidos con respecto a nuevas muertes
 
@@ -65,29 +65,29 @@ Select * from Covid_Death;
 
 
 
-----Total population vs vaccinations ¿How many people in the world have been vaccinated?
+----Total population vs vaccinations Â¿How many people in the world have been vaccinated?
 
 Select * 
 from Covid_Death dea
 join Covid_Vaccionation vac
 on dea.location = vac.location
-and dea.date = vac.date       -- Se puede hacer un join por dos condiciones!
+and dea.date = vac.date       -- Join por doble condiciÃ³n
 
 Select  dea.continent ,dea.location, dea.date ,dea.population, vac.new_vaccinations from Covid_Death dea
 join Covid_Vaccionation vac
 on dea.location = vac.location
-and dea.date = vac.date       -- Se puede hacer un join por dos condiciones!
+and dea.date = vac.date       -- Join por doble condiciÃ³n
 where dea.continent is not null
 order by 2,3
 
 --Sacando la suma agregaqda por nuevas vacunas:
 
 Select  dea.continent ,dea.location, dea.date ,dea.population, vac.new_vaccinations,
-sum(cast(vac.new_vaccinations as INT)) over (partition by dea.location order by dea.location,dea.date) as New_Vacc_Acumulated /*The order by it´s very importante*/
+sum(cast(vac.new_vaccinations as INT)) over (partition by dea.location order by dea.location,dea.date) as New_Vacc_Acumulated /*The order by itÂ´s very importante*/
 from Covid_Death dea
 join Covid_Vaccionation vac
 on dea.location = vac.location
-and dea.date = vac.date       -- Se puede hacer un join por dos condiciones!
+and dea.date = vac.date      
 where dea.continent is not null
 order by 2,3
 
@@ -98,7 +98,7 @@ with deathpercentage  (continent, location, date, population, new_vaccinations, 
 as (
 
 Select  dea.continent ,dea.location, dea.date ,dea.population, vac.new_vaccinations,
-sum(cast(vac.new_vaccinations as INT)) over (partition by dea.location order by dea.location,dea.date) as New_Vacc_Acumulated /*The order by it´s very importante*/
+sum(cast(vac.new_vaccinations as INT)) over (partition by dea.location order by dea.location,dea.date) as New_Vacc_Acumulated /*The order by itÂ´s very importante*/
 from Covid_Death dea
 join Covid_Vaccionation vac
 on dea.location = vac.location
@@ -109,11 +109,11 @@ where dea.continent is not null
 
 Select *, death.New_Vacc_Acumulated/death.population *100 as Acumulated_percentage from deathpercentage death
 
---Creating views:
+--Creando vistas:
 
 create View death_percentage_2 as 
 Select dea.continent ,dea.location, dea.date ,dea.population, vac.new_vaccinations,
-sum(cast(vac.new_vaccinations as INT)) over (partition by dea.location order by dea.location,dea.date) as New_Vacc_Acumulated /*The order by it´s very importante*/
+sum(cast(vac.new_vaccinations as INT)) over (partition by dea.location order by dea.location,dea.date) as New_Vacc_Acumulated /*The order by itÂ´s very importante*/
 from Covid_Death dea
 join Covid_Vaccionation vac
 on dea.location = vac.location
