@@ -1,0 +1,8 @@
+--Ver los gastos según categoría de gasto, a nivel mensual
+Select distinct(cast(month(je.FechaEfectiva) as varchar)) +'/'+ cast(year(je.FechaEfectiva) as varchar)
+as fecha,coa.CuentaContable_Clase,sum(je.Monto) as monto from COA_31122020 coa inner join JE_01012020_31122020 je on
+coa.CuentaContable = je.CuentaContable
+group by 
+cast(month(je.FechaEfectiva) as varchar) +'/'+ cast(year(je.FechaEfectiva) as varchar),
+coa.CuentaContable_Clase
+order by 1 desc, 3 DESC
