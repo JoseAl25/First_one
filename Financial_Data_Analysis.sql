@@ -1,4 +1,4 @@
---Entidad X Crecimiento interanual de cartera, hacerlo mediante SQL:
+--Entidad X Crecimiento interanual de cartera
 
 with base as (
 
@@ -134,7 +134,7 @@ Select periodo_id, DISEF, interbank_1, BCP,Ripley, Falabella, Credicotia,
 from base
 order by periodo_id DESC;
 
---Banca no minorista, concentraciÛn 10 principales clientes:
+--Banca no minorista, concentraci√≥n 10 principales clientes:
 
 Select periodo_id, Columna_1,Columna_2,
 sum(Columna_3) as Cartera_total,
@@ -161,7 +161,7 @@ group by periodo_id, Columna_2,Columna_3
 order by 1 desc, 4 desc
 
  
---gr·fico de ROA, ROE con la info de Balance
+--gr√°fico de ROA, ROE con la info de Balance
 
 with base as (
 Select periodo_fecha, Columna_2, Columna_3,
